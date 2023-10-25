@@ -1,5 +1,3 @@
-# TODO(创建 Pygame 窗口以及响应用户输入)
-
 import sys
 import pygame
 
@@ -21,7 +19,7 @@ def run_game():
 
 	while True:
 	 	# 监视键盘和鼠标事件
-		game_func.check_events()
+		game_func.check_events(ship)
 	   			
 		# 每次循环时都重绘屏幕,让最近绘制的屏幕可见
 		game_func.update_screen(game_setting, screen, ship)

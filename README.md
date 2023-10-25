@@ -1,11 +1,11 @@
+# Ship
+
+- 增加移动标志
+- 增加updata方法,更新ship的x坐标
+  - bug: 无法左移
+
+
+
 # Game-Func
 
-- 将Game中的check-events功能独立到Game-Func里的check_events函数里
-- 将Game中的update-screen功能独立到Game-Func里的update_screen函数里
-
-
-
-# Game
-
-- 由此,重构game
-- 删除遗留的TODO注释
+- 更新check_event方法,支持对KEY的检查,并且增加参数使用:ship
