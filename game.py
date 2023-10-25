@@ -10,6 +10,7 @@ import game_func
 def run_game():
 	pygame.init()
 
+	# 设置屏幕(初始化, 大小, 背景颜色)
 	game_setting = Setting()
 	screen = pygame.display.set_mode((game_setting.screen_width, game_setting.screen_height))
 	pygame.display.set_caption(game_setting.caption)
