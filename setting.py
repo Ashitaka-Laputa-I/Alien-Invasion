@@ -10,3 +10,6 @@ class Setting():
 
       # 标题设置
       self.caption = 'Alien Invasion'
+
+      # 飞船设置
+      self.ship_speed_factor = 0.2
