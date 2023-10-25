@@ -1,18 +1,11 @@
-# Ship
+# Game-Func
 
-- 新增Ship类
-  - 增加init方法
-  - 增加biltme方法
+- 将Game中的check-events功能独立到Game-Func里的check_events函数里
+- 将Game中的update-screen功能独立到Game-Func里的update_screen函数里
 
 
 
 # Game
 
-- 增加ship属性
-- 绘制ship对象
-
-
-
-# Setting
-
-- 修改屏幕大小,以适合飞船大小(自己画的xD,只能用屏幕适应图片了)
+- 由此,重构game
+- 删除遗留的TODO注释

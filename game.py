@@ -6,6 +6,8 @@ import pygame
 from setting import Setting
 from ship import Ship
 
+import game_func
+
 
 def run_game():
 	pygame.init()
@@ -19,16 +21,10 @@ def run_game():
 
 	while True:
 	 	# 监视键盘和鼠标事件
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT: 
-	   			sys.exit() 
+		game_func.check_events()
 	   			
-		# 每次循环时都重绘屏幕 
-		screen.fill(game_setting.bg_color)
-		ship.blitme()
-
-	 	# 让最近绘制的屏幕可见
-		pygame.display.flip() 
+		# 每次循环时都重绘屏幕,让最近绘制的屏幕可见
+		game_func.update_screen(game_setting, screen, ship)
 
 
 if __name__ == '__main__':
