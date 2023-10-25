@@ -7,22 +7,30 @@ class Ship():
         """初始化(设置, 屏幕)"""
         # 设置
         self.setting = setting
+
         # 屏幕
         self.screen = screen
+
         # 屏幕外接矩阵
-        self.screen_rect = self.screen.get_rect()   
+        self.screen_rect = self.screen.get_rect()  
+
         # 图像
         self.image = pygame.image.load('image/ship.bmp')
+
         # 图像外接矩阵
         self.rect = self.image.get_rect()
+
         # 图像位置
         self.rect.centerx = self.screen_rect.centerx
         self.rect.bottom = self.screen_rect.bottom
+
         # 飞船移动标志位
         self.moving_right = False
         self.moving_left = False
+
         # 飞船速度
         self.speed = setting.ship_speed_factor
+        
         #飞船精确位置
         self.center = float(self.rect.centerx)
 
