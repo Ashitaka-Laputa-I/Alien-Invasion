@@ -1,30 +1,31 @@
-# Bullet
+# Alien
 
-- 创建Bullet类
-  - update方法
-  - draw_bullet方法
-
-
-
-# Game
-
-- 增添game_bullets
-- 为check_events与update_screen方法增添参数
+- 新增Alien类
+  - 相应属性
+  - 增加update方法(未实现内容)
+  - 增加blitme方法
+  - 上传alien.bmp图像
 
 
 
 # Game-Func
 
-- _check_down中增添对K_SAPCE的检测,同时增加fire_bullet的功能,且重构之,使后者封装到fire_bullet方法
-- 重构update_screen,使内部封装到
-  - update_bullets方法
-  - update_ship方法
+- 删除_update_ship与__update_bullets中不必要的参数
+- 增加_update_alien方法
+- 增加update_screen中alien参数
 
 
 
-# Setting
+# Ship
 
-- 增添子弹的属性
+- 优化Ship类,
+  - 删除update方法不必要的参数
+
+
+
+# Game
+
+- 创建game_alien实例
 
 
 

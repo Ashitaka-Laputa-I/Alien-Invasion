@@ -4,6 +4,7 @@ from pygame.sprite import Group
 
 from setting import Setting
 from ship import Ship
+from alien import Alien
 
 import game_func
 
@@ -21,12 +22,15 @@ def run_game():
 	# 创建一组子弹
 	game_bullets = Group()
 
+	# 创建一个外星人
+	game_alien = Alien(game_setting, game_screen)
+
 	while True:
 	 	# 监视键盘和鼠标事件
 		game_func.check_events(game_setting, game_screen, game_ship, game_bullets)
 	   			
 		# 每次循环时都重绘屏幕,让最近绘制的屏幕可见
-		game_func.update_screen(game_setting, game_screen, game_ship, game_bullets)
+		game_func.update_screen(game_setting, game_screen, game_ship, game_bullets, game_alien)
 
 
 if __name__ == '__main__':

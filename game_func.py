@@ -18,11 +18,12 @@ def check_events(setting, screen, ship, bullets):
 			_check_keyup_events(event, ship)
 
 
-def update_screen(setting, screen, ship, bullets):
+def update_screen(setting, screen, ship, bullets, alien):
 	"""更新屏幕中的元素(先绘制屏幕,再绘制子弹,再绘制飞船,再显示)"""
 	screen.fill(setting.bg_color)
+	_update_alien(alien)
 	_update_bullets(bullets)
-	_update_ship(setting, ship)
+	_update_ship(ship)
 	pygame.display.flip()
 
 
@@ -58,16 +59,21 @@ def _update_bullets(bullets):
 		bullet.draw_bullet()
 
 
-def _update_ship(setting, ship):
+def _update_ship(ship):
 	# 更新飞船位置
-	ship.update(setting)
+	ship.update()
 
 	# 绘制飞船
 	ship.blitme()
 
+
+def _update_alien(alien):
+	alien.update()
+	alien.blitme()
 
 def _fire_bullet(setting, screen, ship, bullets):
 	# 创建一枚子弹,并且加入子弹组中
 	if len(bullets) < setting.bullets_allowed:
 		new_bullet = Bullet(setting, screen, ship)
 		bullets.add(new_bullet)
+

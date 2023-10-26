@@ -15,7 +15,7 @@ class Ship():
         self.screen_rect = self.screen.get_rect()  
 
         # 图像
-        self.image = pygame.image.load('image/ship.bmp')
+        self.image = pygame.image.load('images/ship.bmp')
 
         # 图像外接矩阵
         self.rect = self.image.get_rect()
@@ -35,7 +35,7 @@ class Ship():
         self.center = float(self.rect.centerx)
 
 
-    def update(self, setting):
+    def update(self):
         """根据移动标志调整飞船的位置"""
         if self.moving_right and self.rect.right < self.screen_rect.right: 
             self.center += self.speed
