@@ -45,6 +45,11 @@ class Ship():
         self.rect.centerx = int(self.center)
 
 
+    def center_it(self):
+        """初始化飞船"""
+        self.center = self.screen_rect.centerx
+
+
     def blitme(self):
         """在屏幕midbottom位置绘制飞船"""
         self.screen.blit(self.image, self.rect)

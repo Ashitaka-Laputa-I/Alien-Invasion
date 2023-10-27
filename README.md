@@ -1,19 +1,22 @@
-# Setting
+# Game-Stats
 
-- 增添外星人设置
-
-- 优化飞船,外星人,子弹移动速度,使之平衡
+- 增加GameStats类
+  - 飞船的剩余量
+  - 游戏运行标志
 
 
 
 # Game-Func
 
-- 增加_check_fleet_edges方法,实现_update_aliens方法
+- 优化各个函数的参数排列, 并且增加缺少注释, 函数的排列顺序
+  1. setting
+  2. stats
+  3. screen
+  4. ship
+  5. bullets
+  6. aliens
 
 
 
-# Alien
 
-- 实现update方法
-- 增加check_edges方法
 

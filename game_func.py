@@ -1,5 +1,6 @@
 import sys
 import pygame
+import time
 
 from bullet import Bullet
 from alien import Alien
@@ -14,32 +15,43 @@ def check_events(setting, screen, ship, bullets):
 
 		# 检测左右与空格键	
 		elif event.type == pygame.KEYDOWN: 
-			_check_keydown_events(event, setting, screen, ship, bullets)
+			_check_keydown_events(setting, screen, ship, bullets, event)
 		elif event.type == pygame.KEYUP: 
-			_check_keyup_events(event, ship)
+			_check_keyup_events(ship, event)
 
 
-def update_screen(setting, screen, ship, bullets, aliens):
+def update_screen(setting, stats, screen, ship, bullets, aliens):
 	"""更新屏幕中的元素(先绘制屏幕,再绘制子弹,再绘制飞船,再显示)"""
+	# 屏幕填充背景
 	screen.fill(setting.bg_color)
-	_update_aliens(aliens, setting)
-	_update_bullets(bullets)
+	# 更新外星人群位置,并且绘制在以上屏幕上
+	_update_aliens(setting, stats, screen, ship, bullets, aliens)
+	# 更新子弹位置,并且绘制在以上屏幕上
+	_update_bullets(setting, screen, ship, bullets, aliens)
+	# 更新飞船位置,并且绘制在屏幕上
 	_update_ship(ship)
+	# 将屏幕打印在窗口里
 	pygame.display.flip()
 
 
 def create_fleet(setting, screen, ship, aliens):
 	""""创建外星人群"""
+	# 获取外星人创建的行列容量
 	alien = Alien(setting, screen)
 	number_row = _get_number_aliens_row(alien, ship) 
 	number_clown = _get_number_aliens_clown(alien)
 
+	# 将外星人初始化,并且加入外星人群中
 	for row_number in range(number_row):
 		for clown_number in range(number_clown):
 			_create_alien(setting, screen, aliens, clown_number, row_number)
 
 
-def _check_keydown_events(event, setting, screen, ship, bullets):
+
+
+
+
+def _check_keydown_events(setting, screen, ship, bullets, event):
 	"""检测键盘按下事件(物理上D键优先于A键)"""
 	if event.key == pygame.K_d: 
 		ship.moving_right = True 
@@ -49,7 +61,7 @@ def _check_keydown_events(event, setting, screen, ship, bullets):
 		_fire_bullet(setting, screen, ship, bullets)
 
 
-def _check_keyup_events(event, ship):
+def _check_keyup_events(ship, event):
 	"""检测键盘松开事件(物理上D键优先于A键)"""
 	if event.key == pygame.K_d: 
 		ship.moving_right = False 
@@ -65,7 +77,7 @@ def _update_ship(ship):
 	ship.blitme()
 
 
-def _update_bullets(bullets):
+def _update_bullets(setting, screen, ship, bullets, aliens):
 	# 更新子弹位置
 	bullets.update()
 
@@ -74,37 +86,31 @@ def _update_bullets(bullets):
 		if bullet.rect.bottom <= 0:
 			bullets.remove(bullet)
 
+	_check_bullet_alien_collision(setting, screen, ship, bullets, aliens)
+
 	# 绘制子弹
 	for bullet in bullets.sprites():
 		bullet.draw_bullet()
 
 
-def _update_aliens(aliens, setting):
+def _update_aliens(setting, stats, screen, ship, bullets,  aliens):
 	# 检测外星人是否触碰屏幕边缘,并且由此更改方向
-	_check_fleet_edges(aliens, setting)
+	_check_fleet_edges(setting, aliens)
 
 	# 更新外星人位置
 	aliens.update(setting)
 
+
+	# 检测外星人与飞船是否碰撞:
+	if pygame.sprite.spritecollideany(ship, aliens):
+		_you_die(setting, stats, screen, ship, bullets, aliens)
+
+	# 检测外星人是否到达了底端:
+	_check_fleet_bottom(setting, stats, screen, ship, bullets, aliens)
+
 	# 绘制外星人
 	for alien in aliens.sprites():
 		alien.blitme()
-
-
-def _check_fleet_edges(aliens, setting):
-	"""当有外星人到达边缘时切换外星人群水平移动方向"""
-	for alien in aliens.sprites():
-		if alien.check_edges():
-			setting.fleet_direction *= -1
-			break
-
-
-def _fire_bullet(setting, screen, ship, bullets):
-	"""创建一枚子弹,并且加入子弹组中"""
-	if len(bullets) < setting.bullets_allowed:
-		new_bullet = Bullet(setting, screen, ship)
-		bullets.add(new_bullet)
-
 
 
 def _get_number_aliens_clown(alien):
@@ -135,3 +141,57 @@ def _create_alien(setting, screen, aliens, clown, row):
 
 	# 添加至外星人组
 	aliens.add(alien)
+
+
+def _check_fleet_edges(setting, aliens):
+	"""当有外星人到达边缘时切换外星人群水平移动方向"""
+	for alien in aliens.sprites():
+		if alien.check_edges():
+			setting.fleet_direction *= -1
+			break
+
+
+def _check_fleet_bottom(setting, stats, screen, ship, bullets, aliens):
+	"""检测外星人是否到达屏幕底端"""
+	screen_rect = screen.get_rect()
+
+	for alien in aliens.sprites():
+		if alien.rect.bottom >= screen_rect.bottom:
+			_you_die(setting, stats, screen, ship, bullets, aliens)
+			break
+
+
+def _you_die(setting, stats, screen, ship, bullets, aliens):
+	"""响应外星人撞到飞船"""
+	# 飞船剩余量减一
+	stats.ship_left -= 1
+	# 飞船剩余量为0而再"死"则Game-Over
+	if stats.ship_left <= 0:
+		stats.game_active = False
+	else:
+		# 清空外星人与子弹
+		aliens.empty()
+		bullets.empty()
+
+		# 创建新的外星人群, 并且将飞船初始化
+		create_fleet(setting, screen, ship, aliens)
+		ship.center_it()
+
+		# 暂停1s
+		time.sleep(1)
+
+
+def _fire_bullet(setting, screen, ship, bullets):
+	"""创建一枚子弹,并且加入子弹组中"""
+	if len(bullets) < setting.bullets_allowed:
+		new_bullet = Bullet(setting, screen, ship)
+		bullets.add(new_bullet)
+
+
+def _check_bullet_alien_collision(setting, screen, ship, bullets, aliens):
+	# 检测子弹是否击中外星人,如此删除对应子弹与外星人
+	collision = pygame.sprite.groupcollide(bullets, aliens, True, True)
+
+	if len(aliens) == 0:
+		bullets.empty()
+		create_fleet(setting, screen, ship, aliens)
