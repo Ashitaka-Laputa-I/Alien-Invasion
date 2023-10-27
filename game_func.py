@@ -28,18 +28,15 @@ def update_screen(setting, screen, ship, bullets, aliens):
 	pygame.display.flip()
 
 
-def create_fleet(setting, screen, aliens):
+def create_fleet(setting, screen, ship, aliens):
 	""""创建外星人群"""
 	alien = Alien(setting, screen)
-	alien_width = alien.rect.width
-	available_space_x = setting.screen_width - 2 * alien_width
-	number_aliens = int(available_space_x / (2 * alien_width))
+	number_row = _get_number_aliens_row(alien, ship)
+	number_clown = _get_number_aliens_clown(alien)
 
-	for alien_number in range(number_aliens):
-		alien = Alien(setting, screen)
-		alien.x = alien_width + 2 * alien_width * alien_number
-		alien.rect.x = int(alien.x)
-		aliens.add(alien)
+	for row_number in range(number_row):
+		for clown_number in range(number_clown):
+			_create_alien(setting, screen, aliens, clown_number, row_number)
 
 
 def _check_keydown_events(event, setting, screen, ship, bullets):
@@ -83,29 +80,14 @@ def _update_bullets(bullets):
 
 
 def _update_aliens(aliens):
-<<<<<<< Updated upstream
-	for alien in aliens.sprites():
-		alien.blitme()
-
-
-def _update_ship(ship):
-	# 更新飞船位置
-	ship.update()
-=======
 	# 更新外星人位置
 	aliens.update()
->>>>>>> Stashed changes
 
 	# 绘制外星人
 	for alien in aliens.sprites():
 		alien.blitme()
 
 
-<<<<<<< Updated upstream
-
-
-=======
->>>>>>> Stashed changes
 def _fire_bullet(setting, screen, ship, bullets):
 	# 创建一枚子弹,并且加入子弹组中
 	if len(bullets) < setting.bullets_allowed:
@@ -113,19 +95,34 @@ def _fire_bullet(setting, screen, ship, bullets):
 		bullets.add(new_bullet)
 
 
-<<<<<<< Updated upstream
-def create_fleet(setting, screen, aliens):
-	""""创建外星人群"""
-	alien = Alien(setting, screen)
-	alien_width = alien.rect.width
-	available_space_x = setting.screen_width - 2 * alien_width
-	number_aliens = int(available_space_x / (2 * alien_width))
+def _get_number_aliens_clown(alien):
+	available_space_x = alien.setting.screen_width - 2 * alien.rect.width
+	number_clown = int(available_space_x / (2 * alien.rect.width))
 
-	for alien_number in range(number_aliens):
-		alien = Alien(setting, screen)
-		alien.x = alien_width + 2 * alien_width * alien_number
-		alien.rect.x = int(alien.x)
-		aliens.add(alien)
-=======
->>>>>>> Stashed changes
+	return number_clown
+
+def _get_number_aliens_row(alien, ship):
+	available_space_y = (alien.setting.screen_height - (3 * alien.rect.height) - ship.rect.height)
+	number_row = int(available_space_y / (2 * alien.rect.height))
+
+	return number_row
+
+def _create_alien(setting, screen, aliens, clown, row):
+	# 初始化外星人
+	alien = Alien(setting, screen)
+
+	# 设置外星人精确位置
+	alien.x = alien.rect.width + 2 * alien.rect.width * clown
+	alien.y = alien.rect.height + 2 * alien.rect.height * row
+
+	#设置外星人位置
+	alien.rect.x = int(alien.x)
+	alien.rect.y = int(alien.y)
+
+	# 添加至外星人组
+	aliens.add(alien)
+
+
+
+
 

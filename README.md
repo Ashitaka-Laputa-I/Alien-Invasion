@@ -1,20 +1,14 @@
 # Game-Func
 
-- 增加create_fleet方法
-  - 对外星人类创建一行
-- 更新_update_aliens方法
-  - 代码风格修正为_update_ship类的
-- 据此将update_screen中相应代码修改成_update_aliens
+- 重构create_fleet方法, 增加外星人行的创建, 独立为以下函数:
+  - _get_number_aliens_clown
+  - _get_number_aliens_row
+  - _create_alien
 
 
 
-# Game
+# Alien
 
-- 创建外星人组
-- 将创建外星人群移出while循环, 优化程序运行
-
-
-
-# Setting
-
-- 据此优化,程序速度加快,由此修正飞船子弹的速度
+- 增加类属性:
+  - 精确x值
+  - 精确y值
