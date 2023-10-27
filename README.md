@@ -1,34 +1,31 @@
-# Button
+# 永远不要半夜找BUG
 
-- 增加Button类
-  - 增加_present_message与draw_buttom方法
+- 现象: 分数第一次就被乘上了倍数
+- 猜想: speedup方法被意外调用了
 
 
 
-# Game
+# Scoreboard
 
-- 增加game-buttom实例
-- 修正update_screen函数位置,将判断游戏激活与否嵌入函数内
+- 增加分数板相应属性
+- 增加update与blitme方法
 
 
 
 # Game-Func
 
-- check_events函数中,增加对鼠标点击的检测
-
-- 增加_check_mousedown_events方法
-- 增加鼠标开始游戏隐藏,结束显示功能
-- 增加游戏加速功能
+- 扩充update_screen函数
+  - 增加对分数板的更新与绘制
 
 
 
-# Stats
+# Game-Stats
 
-- 改游戏状态初始化为False
+- 增加分数属性
 
 
 
 # Setting
 
-- 增加加速参数
-- 增加initialize_dynamic_setting与increase_speed方法
+- 增加相应属性
+

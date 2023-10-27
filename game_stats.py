@@ -11,4 +11,8 @@ class GameStats():
 
 	def reset_stats(self):
 		"""初始化游戏统计信息"""
+		# 飞船剩余数量
 		self.ship_left = self.setting.ship_limit
+		# 得分
+		self.score = 0
+		
