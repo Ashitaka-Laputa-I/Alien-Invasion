@@ -1,22 +1,34 @@
-# Game-Stats
+# Button
 
-- 增加GameStats类
-  - 飞船的剩余量
-  - 游戏运行标志
+- 增加Button类
+  - 增加_present_message与draw_buttom方法
+
+
+
+# Game
+
+- 增加game-buttom实例
+- 修正update_screen函数位置,将判断游戏激活与否嵌入函数内
 
 
 
 # Game-Func
 
-- 优化各个函数的参数排列, 并且增加缺少注释, 函数的排列顺序
-  1. setting
-  2. stats
-  3. screen
-  4. ship
-  5. bullets
-  6. aliens
+- check_events函数中,增加对鼠标点击的检测
+
+- 增加_check_mousedown_events方法
+- 增加鼠标开始游戏隐藏,结束显示功能
+- 增加游戏加速功能
 
 
 
+# Stats
+
+- 改游戏状态初始化为False
 
 
+
+# Setting
+
+- 增加加速参数
+- 增加initialize_dynamic_setting与increase_speed方法

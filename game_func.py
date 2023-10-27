@@ -6,12 +6,16 @@ from bullet import Bullet
 from alien import Alien
 
 
-def check_events(setting, screen, ship, bullets):
+def check_events(setting, stats, screen, ship, bullets, aliens, button):
 	"""响应按键和鼠标事件"""
 	for event in pygame.event.get():
 		# 检测退出键
 		if event.type == pygame.QUIT:
 			sys.exit()
+
+		# 检测鼠标点击
+		elif event.type == pygame.MOUSEBUTTONDOWN:
+			_check_mousedown_events(setting, stats, ship, bullets, aliens, button)
 
 		# 检测左右与空格键	
 		elif event.type == pygame.KEYDOWN: 
@@ -20,17 +24,22 @@ def check_events(setting, screen, ship, bullets):
 			_check_keyup_events(ship, event)
 
 
-def update_screen(setting, stats, screen, ship, bullets, aliens):
+def update_screen(setting, stats, screen, ship, bullets, aliens, button):
 	"""更新屏幕中的元素(先绘制屏幕,再绘制子弹,再绘制飞船,再显示)"""
-	# 屏幕填充背景
-	screen.fill(setting.bg_color)
-	# 更新外星人群位置,并且绘制在以上屏幕上
-	_update_aliens(setting, stats, screen, ship, bullets, aliens)
-	# 更新子弹位置,并且绘制在以上屏幕上
-	_update_bullets(setting, screen, ship, bullets, aliens)
-	# 更新飞船位置,并且绘制在屏幕上
-	_update_ship(ship)
-	# 将屏幕打印在窗口里
+	if stats.game_active:
+		# 屏幕填充背景
+		screen.fill(setting.bg_color)
+		# 更新外星人群位置,并且绘制在以上屏幕上
+		_update_aliens(setting, stats, screen, ship, bullets, aliens)
+		# 更新子弹位置,并且绘制在以上屏幕上
+		_update_bullets(setting, screen, ship, bullets, aliens)
+		# 更新飞船位置,并且绘制在屏幕上
+		_update_ship(ship)
+		# 将屏幕打印在窗口里
+	if not stats.game_active:
+		# 绘制按钮
+		button.draw_button()
+
 	pygame.display.flip()
 
 
@@ -47,8 +56,21 @@ def create_fleet(setting, screen, ship, aliens):
 			_create_alien(setting, screen, aliens, clown_number, row_number)
 
 
-
-
+def _check_mousedown_events(setting, stats, ship, bullets, aliens, button):
+	"""检测鼠标点击按钮"""
+	mouse_x, mouse_y = pygame.mouse.get_pos()
+	if button.rect.collidepoint(mouse_x, mouse_y) and not stats.game_active:
+		# 隐藏光标
+		pygame.mouse.set_visible(False)
+		# 重置游戏统计信息
+		stats.reset_stats()
+		stats.game_active = True
+		# 重置游戏参数
+		setting.initialize_dynamic_setting()
+		# 清空外星人与子弹
+		aliens.empty()
+		bullets.empty()
+		# 创建外星人,初始化废飞船
 
 
 def _check_keydown_events(setting, screen, ship, bullets, event):
@@ -168,6 +190,7 @@ def _you_die(setting, stats, screen, ship, bullets, aliens):
 	# 飞船剩余量为0而再"死"则Game-Over
 	if stats.ship_left <= 0:
 		stats.game_active = False
+		pygame.mouse.set_visible(True)
 	else:
 		# 清空外星人与子弹
 		aliens.empty()
@@ -194,4 +217,5 @@ def _check_bullet_alien_collision(setting, screen, ship, bullets, aliens):
 
 	if len(aliens) == 0:
 		bullets.empty()
+		setting.increase_speed()
 		create_fleet(setting, screen, ship, aliens)
