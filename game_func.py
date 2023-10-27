@@ -12,7 +12,7 @@ def check_events(setting, screen, ship, bullets):
 		if event.type == pygame.QUIT:
 			sys.exit()
 
-		# 检测左右键	
+		# 检测左右与空格键	
 		elif event.type == pygame.KEYDOWN: 
 			_check_keydown_events(event, setting, screen, ship, bullets)
 		elif event.type == pygame.KEYUP: 
@@ -26,6 +26,20 @@ def update_screen(setting, screen, ship, bullets, aliens):
 	_update_bullets(bullets)
 	_update_ship(ship)
 	pygame.display.flip()
+
+
+def create_fleet(setting, screen, aliens):
+	""""创建外星人群"""
+	alien = Alien(setting, screen)
+	alien_width = alien.rect.width
+	available_space_x = setting.screen_width - 2 * alien_width
+	number_aliens = int(available_space_x / (2 * alien_width))
+
+	for alien_number in range(number_aliens):
+		alien = Alien(setting, screen)
+		alien.x = alien_width + 2 * alien_width * alien_number
+		alien.rect.x = int(alien.x)
+		aliens.add(alien)
 
 
 def _check_keydown_events(event, setting, screen, ship, bullets):
@@ -46,6 +60,14 @@ def _check_keyup_events(event, ship):
 		ship.moving_left = False 
 
 
+def _update_ship(ship):
+	# 更新飞船位置
+	ship.update()
+
+	# 绘制飞船
+	ship.blitme()
+
+
 def _update_bullets(bullets):
 	# 更新子弹位置
 	bullets.update()
@@ -61,6 +83,7 @@ def _update_bullets(bullets):
 
 
 def _update_aliens(aliens):
+<<<<<<< Updated upstream
 	for alien in aliens.sprites():
 		alien.blitme()
 
@@ -68,13 +91,21 @@ def _update_aliens(aliens):
 def _update_ship(ship):
 	# 更新飞船位置
 	ship.update()
+=======
+	# 更新外星人位置
+	aliens.update()
+>>>>>>> Stashed changes
 
-	# 绘制飞船
-	ship.blitme()
+	# 绘制外星人
+	for alien in aliens.sprites():
+		alien.blitme()
 
 
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 def _fire_bullet(setting, screen, ship, bullets):
 	# 创建一枚子弹,并且加入子弹组中
 	if len(bullets) < setting.bullets_allowed:
@@ -82,6 +113,7 @@ def _fire_bullet(setting, screen, ship, bullets):
 		bullets.add(new_bullet)
 
 
+<<<<<<< Updated upstream
 def create_fleet(setting, screen, aliens):
 	""""创建外星人群"""
 	alien = Alien(setting, screen)
@@ -94,4 +126,6 @@ def create_fleet(setting, screen, aliens):
 		alien.x = alien_width + 2 * alien_width * alien_number
 		alien.rect.x = int(alien.x)
 		aliens.add(alien)
+=======
+>>>>>>> Stashed changes
 

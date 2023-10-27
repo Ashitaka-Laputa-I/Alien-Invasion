@@ -1,33 +1,20 @@
-# Alien
-
-- 新增Alien类
-  - 相应属性
-  - 增加update方法(未实现内容)
-  - 增加blitme方法
-  - 上传alien.bmp图像
-
-
-
 # Game-Func
 
-- 删除_update_ship与__update_bullets中不必要的参数
-- 增加_update_alien方法
-- 增加update_screen中alien参数
-
-
-
-# Ship
-
-- 优化Ship类,
-  - 删除update方法不必要的参数
+- 增加create_fleet方法
+  - 对外星人类创建一行
+- 更新_update_aliens方法
+  - 代码风格修正为_update_ship类的
+- 据此将update_screen中相应代码修改成_update_aliens
 
 
 
 # Game
 
-- 创建game_alien实例
+- 创建外星人组
+- 将创建外星人群移出while循环, 优化程序运行
 
 
 
+# Setting
 
-
+- 据此优化,程序速度加快,由此修正飞船子弹的速度

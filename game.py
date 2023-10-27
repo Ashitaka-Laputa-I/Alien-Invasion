@@ -22,15 +22,26 @@ def run_game():
 	# 创建一组子弹
 	game_bullets = Group()
 
+<<<<<<< Updated upstream
 	# 创建一个外星人
 	game_aliens = Group()
+=======
+	# 创建一群外星人
+	game_aliens = Group()
+
+	# 创建外星人群
+	game_func.create_fleet(game_setting, game_screen,game_ship, game_aliens)		
+>>>>>>> Stashed changes
 
 	while True:
 	 	# 监视键盘和鼠标事件
 		game_func.check_events(game_setting, game_screen, game_ship, game_bullets)
+<<<<<<< Updated upstream
 	   	
 		# 创建外星人群
 		game_func.create_fleet(game_setting, game_screen, game_aliens)
+=======
+>>>>>>> Stashed changes
 
 		# 每次循环时都重绘屏幕,让最近绘制的屏幕可见
 		game_func.update_screen(game_setting, game_screen, game_ship, game_bullets, game_aliens)
