@@ -30,12 +30,30 @@ class Alien(Sprite):
 		self.y = float(self.rect.y)
 
 
-	def update(self):
-		pass	
+	def update(self, setting):
+		# 计算外星人准确的坐标
+		self.x += setting.fleet_speed_factor * setting.fleet_direction
+		self.y += setting.fleet_drop_speed_factor
+
+		# 设置外星人位置
+		self.rect.x = int(self.x)
+		self.rect.y = int(self.y)
+		
 
 	def blitme(self):
 		"""绘制外星人"""
 		self.screen.blit(self.image, self.rect)
+
+
+	def check_edges(self):
+		"""检测外星人是否处于屏幕边缘"""
+		screen_rect = self.screen.get_rect()
+		if self.rect.right >= screen_rect.right:
+			return True
+		elif self.rect.left <= 0:
+			return True
+
+
 
 
 

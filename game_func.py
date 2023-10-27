@@ -22,7 +22,7 @@ def check_events(setting, screen, ship, bullets):
 def update_screen(setting, screen, ship, bullets, aliens):
 	"""更新屏幕中的元素(先绘制屏幕,再绘制子弹,再绘制飞船,再显示)"""
 	screen.fill(setting.bg_color)
-	_update_aliens(aliens)
+	_update_aliens(aliens, setting)
 	_update_bullets(bullets)
 	_update_ship(ship)
 	pygame.display.flip()
@@ -31,7 +31,7 @@ def update_screen(setting, screen, ship, bullets, aliens):
 def create_fleet(setting, screen, ship, aliens):
 	""""创建外星人群"""
 	alien = Alien(setting, screen)
-	number_row = _get_number_aliens_row(alien, ship)
+	number_row = _get_number_aliens_row(alien, ship) 
 	number_clown = _get_number_aliens_clown(alien)
 
 	for row_number in range(number_row):
@@ -79,20 +79,32 @@ def _update_bullets(bullets):
 		bullet.draw_bullet()
 
 
-def _update_aliens(aliens):
+def _update_aliens(aliens, setting):
+	# 检测外星人是否触碰屏幕边缘,并且由此更改方向
+	_check_fleet_edges(aliens, setting)
+
 	# 更新外星人位置
-	aliens.update()
+	aliens.update(setting)
 
 	# 绘制外星人
 	for alien in aliens.sprites():
 		alien.blitme()
 
 
+def _check_fleet_edges(aliens, setting):
+	"""当有外星人到达边缘时切换外星人群水平移动方向"""
+	for alien in aliens.sprites():
+		if alien.check_edges():
+			setting.fleet_direction *= -1
+			break
+
+
 def _fire_bullet(setting, screen, ship, bullets):
-	# 创建一枚子弹,并且加入子弹组中
+	"""创建一枚子弹,并且加入子弹组中"""
 	if len(bullets) < setting.bullets_allowed:
 		new_bullet = Bullet(setting, screen, ship)
 		bullets.add(new_bullet)
+
 
 
 def _get_number_aliens_clown(alien):
@@ -101,11 +113,13 @@ def _get_number_aliens_clown(alien):
 
 	return number_clown
 
+
 def _get_number_aliens_row(alien, ship):
-	available_space_y = (alien.setting.screen_height - (3 * alien.rect.height) - ship.rect.height)
+	available_space_y = (alien.setting.screen_height - (3 * alien.rect.height) - 1.5 * ship.rect.height)
 	number_row = int(available_space_y / (2 * alien.rect.height))
 
 	return number_row
+
 
 def _create_alien(setting, screen, aliens, clown, row):
 	# 初始化外星人
@@ -121,8 +135,3 @@ def _create_alien(setting, screen, aliens, clown, row):
 
 	# 添加至外星人组
 	aliens.add(alien)
-
-
-
-
-

@@ -1,14 +1,19 @@
+# Setting
+
+- 增添外星人设置
+
+- 优化飞船,外星人,子弹移动速度,使之平衡
+
+
+
 # Game-Func
 
-- 重构create_fleet方法, 增加外星人行的创建, 独立为以下函数:
-  - _get_number_aliens_clown
-  - _get_number_aliens_row
-  - _create_alien
+- 增加_check_fleet_edges方法,实现_update_aliens方法
 
 
 
 # Alien
 
-- 增加类属性:
-  - 精确x值
-  - 精确y值
+- 实现update方法
+- 增加check_edges方法
+

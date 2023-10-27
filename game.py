@@ -9,10 +9,13 @@ from alien import Alien
 import game_func
 
 def run_game():
+	# 初始化pygame
 	pygame.init()
 
-	# 设置屏幕(初始化, 大小, 背景颜色)
+	# 创建设置
 	game_setting = Setting()
+
+	# 创建屏幕并添加标题
 	game_screen = pygame.display.set_mode((game_setting.screen_width, game_setting.screen_height))
 	pygame.display.set_caption(game_setting.caption)
 
@@ -22,10 +25,8 @@ def run_game():
 	# 创建一组子弹
 	game_bullets = Group()
 
-	# 创建一群外星人
+	# 创建一群外星组
 	game_aliens = Group()
-
-	# 创建外星人群
 	game_func.create_fleet(game_setting, game_screen, game_ship, game_aliens)		
 
 	while True:
