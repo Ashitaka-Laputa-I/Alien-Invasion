@@ -8,6 +8,12 @@ class GameStats():
 		# 游戏运行标志
 		self.game_active = False
 
+		# 游戏最高分
+		self.high_score = 0
+
+		# 游戏难度等级
+		self.level = 1
+
 
 	def reset_stats(self):
 		"""初始化游戏统计信息"""

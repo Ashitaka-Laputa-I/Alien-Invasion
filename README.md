@@ -1,32 +1,20 @@
-# 永远不要半夜找BUG(已修复)
+# Game-Stats
 
-- 现象: 分数第一次就被乘上了倍数
-- 猜想: speedup方法被意外调用了
-- 原因: 第一次子弹碰撞检测时,外星人还未创建
+- 增加最高分属性
+- 增加游戏难度属性
 
 
 
 # Scoreboard
 
-- 增加分数板相应属性
-- 增加update与blitme方法
+- 将update方法特殊为score_update
+- 新增high_score_update方法
+- 新增level_update方法
 
 
 
 # Game-Func
 
-- 扩充update_screen函数
-  - 增加对分数板的更新与绘制
-
-
-
-# Game-Stats
-
-- 增加分数属性
-
-
-
-# Setting
-
-- 增加相应属性
-
+- _check_mouse_events中增加对计分板的初始化
+- _check_bullet_alien_collision增加对计分板的更新
+- 增添_check_high_score函数

@@ -6,7 +6,7 @@ from bullet import Bullet
 from alien import Alien
 
 
-def check_events(setting, stats, screen, ship, bullets, aliens, button):
+def check_events(setting, stats, screen, ship, bullets, aliens, button, scoreboard):
 	"""响应按键和鼠标事件"""
 	for event in pygame.event.get():
 		# 检测退出键
@@ -15,7 +15,7 @@ def check_events(setting, stats, screen, ship, bullets, aliens, button):
 
 		# 检测鼠标点击
 		elif event.type == pygame.MOUSEBUTTONDOWN:
-			_check_mousedown_events(setting, stats, ship, bullets, aliens, button)
+			_check_mousedown_events(setting, stats, ship, bullets, aliens, button, scoreboard)
 
 		# 检测左右与空格键	
 		elif event.type == pygame.KEYDOWN: 
@@ -61,7 +61,7 @@ def create_fleet(setting, screen, ship, aliens):
 			_create_alien(setting, screen, aliens, clown_number, row_number)
 
 
-def _check_mousedown_events(setting, stats, ship, bullets, aliens, button):
+def _check_mousedown_events(setting, stats, ship, bullets, aliens, button, scoreboard):
 	"""检测鼠标点击按钮"""
 	mouse_x, mouse_y = pygame.mouse.get_pos()
 	if button.rect.collidepoint(mouse_x, mouse_y) and not stats.game_active:
@@ -75,7 +75,10 @@ def _check_mousedown_events(setting, stats, ship, bullets, aliens, button):
 		# 清空外星人与子弹
 		aliens.empty()
 		bullets.empty()
-		# 创建外星人,初始化废飞船
+		# 重置计分板
+		scoreboard.score_update()
+		scoreboard.high_score_update()
+		scoreboard.level_update()
 
 
 def _check_keydown_events(setting, screen, ship, bullets, event):
@@ -151,7 +154,7 @@ def _get_number_aliens_clown(alien):
 
 
 def _get_number_aliens_row(alien, ship):
-	available_space_y = (alien.setting.screen_height - (3 * alien.rect.height) - 1.5 * ship.rect.height)
+	available_space_y = (alien.setting.screen_height - (3 * alien.rect.height) - 2.5 * ship.rect.height)
 	number_row = int(available_space_y / (2 * alien.rect.height))
 
 	return number_row
@@ -224,13 +227,22 @@ def _check_bullet_alien_collision(setting, stats, screen, ship, bullets, aliens,
 	collision = pygame.sprite.groupcollide(bullets, aliens, True, True)
 
 	if collision:
-		for alien in collision.values():
+		for aliens in collision.values():
 			stats.score += setting.alien_points
-			scoreboard.update()
+			scoreboard.score_update()
+		_check_high_score(stats, scoreboard)
 
 	if len(aliens) == 0:
 		bullets.empty()
 		create_fleet(setting, screen, ship, aliens)
 		
 		if collision:
+			scoreboard.level_update()
 			setting.increase_speed()
+
+
+def _check_high_score(stats, scoreboard):
+	"""检查是否出现新的最高分"""
+	if stats.score > stats.high_score:
+		stats.high_score = stats.score
+		scoreboard.high_score_update()
