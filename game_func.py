@@ -30,6 +30,7 @@ def update_screen(setting, stats, screen, ship, bullets, aliens, button, scorebo
 	if stats.game_active:
 		# 屏幕填充背景
 		screen.fill(setting.bg_color)
+		
 		# 更新得分板,并且绘制在屏幕上
 		_update_scoreboard(scoreboard)
 		# 更新飞船位置,并且绘制在屏幕上
@@ -229,5 +230,7 @@ def _check_bullet_alien_collision(setting, stats, screen, ship, bullets, aliens,
 
 	if len(aliens) == 0:
 		bullets.empty()
-		setting.increase_speed()
 		create_fleet(setting, screen, ship, aliens)
+		
+		if collision:
+			setting.increase_speed()

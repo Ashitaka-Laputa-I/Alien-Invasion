@@ -38,6 +38,7 @@ class Setting():
       self.fleet_speed_factor *= self.speedup_scale
       self.fleet_drop_speed_factor *= self.speedup_scale_only_for_drop
       self.alien_points = int(self.alien_points * self.points_scale)
+      self.bullet = self.bullet_fee * self.points_scale
 
 
    def initialize_dynamic_setting(self):
@@ -54,6 +55,8 @@ class Setting():
       self.fleet_direction = 1
       # 外星人击杀得分
       self.alien_points = 50
+      # 子弹费用
+      self.bullet_fee = 10
 
 
 
