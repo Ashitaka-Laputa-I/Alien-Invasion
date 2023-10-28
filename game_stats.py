@@ -12,7 +12,7 @@ class GameStats():
 		self.high_score = 0
 
 		# 游戏难度等级
-		self.level = 1
+		self.level = 0
 
 
 	def reset_stats(self):
@@ -21,4 +21,6 @@ class GameStats():
 		self.ship_left = self.setting.ship_limit
 		# 得分
 		self.score = 0
+		# 等级
+		self.level = 0
 		

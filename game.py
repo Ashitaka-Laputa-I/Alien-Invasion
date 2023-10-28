@@ -42,11 +42,13 @@ def run_game():
 	game_scoreboard = Scoreboard(game_setting, game_stats, game_screen)		
 
 	while True:
-	 	# 监视键盘和鼠标事件
-		game_func.check_events(game_setting, game_stats, game_screen, game_ship, game_bullets, game_aliens, game_button, game_scoreboard)
 
 		# 每次循环时都重绘屏幕,让最近绘制的屏幕可见
 		game_func.update_screen(game_setting, game_stats, game_screen, game_ship, game_bullets, game_aliens, game_button, game_scoreboard)
+
+	 	# 监视键盘和鼠标事件
+		game_func.check_events(game_setting, game_stats, game_screen, game_ship, game_bullets, game_aliens, game_button, game_scoreboard)
+		
 
 
 if __name__ == '__main__':

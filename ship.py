@@ -1,10 +1,13 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Ship():
+class Ship(Sprite):
     """飞船类"""
     
     def __init__(self, setting, screen):
         """初始化(设置, 屏幕)"""
+        # 继承父类
+        super().__init__()
         # 设置
         self.setting = setting
 

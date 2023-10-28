@@ -4,9 +4,8 @@ class Setting():
    def __init__(self): 
       """初始化游戏的设置""" 
       # 屏幕设置 
-      self.screen_width = 960 - 64 + 128 * 3
-      self.screen_height = 960
-
+      self.screen_width = 480 - 64 + 128 * 3
+      self.screen_height = 640
       # 颜色设置
       self.bg_color = (230, 230, 230) 
 
@@ -20,7 +19,7 @@ class Setting():
       self.bullet_width = 3
       self.bullet_height = 15
       self.bullet_color = (60, 60, 60)
-      self.bullets_allowed = 30
+      self.bullets_allowed = 5
 
       # 加倍设置
       self.speedup_scale = 1.08
@@ -38,26 +37,22 @@ class Setting():
       self.fleet_speed_factor *= self.speedup_scale
       self.fleet_drop_speed_factor *= self.speedup_scale_only_for_drop
       self.alien_points = int(self.alien_points * self.points_scale)
-      self.bullet = self.bullet_fee * self.points_scale
 
 
    def initialize_dynamic_setting(self):
       """初始化随游戏进行而变化的设置"""
       # 飞船速度
-      self.ship_speed_factor = 0.25
+      self.ship_speed_factor = 0.1
       # 子弹速度
-      self.bullet_speed_factor = 0.45
+      self.bullet_speed_factor = 0.15
       # 外星人水平速度
-      self.fleet_speed_factor = 0.4
+      self.fleet_speed_factor = 0.055
       # 外星人垂直速度
-      self.fleet_drop_speed_factor = 0.03
+      self.fleet_drop_speed_factor = 0.008
       # 外星人方向
       self.fleet_direction = 1
       # 外星人击杀得分
-      self.alien_points = 50
-      # 子弹费用
-      self.bullet_fee = 10
-
+      self.alien_points = 25
 
 
 

@@ -1,20 +1,44 @@
-# Game-Stats
+# BUG
 
-- 增加最高分属性
-- 增加游戏难度属性
+- 依旧是分数初始化问题
+- 原因: collision自动变成0了,导致永远不能升级
+- 解决: 初始化允许乘上增长因子, 即初始化退一级, 而由此接受乘上增长因子
+
+
+
+# Images
+
+- 修正飞船与外星人图像
 
 
 
 # Scoreboard
 
-- 将update方法特殊为score_update
-- 新增high_score_update方法
-- 新增level_update方法
+- 增加ship_update方法
 
 
 
-# Game-Func
+# Ship
 
-- _check_mouse_events中增加对计分板的初始化
-- _check_bullet_alien_collision增加对计分板的更新
-- 增添_check_high_score函数
+- 将Ship类扩展成Sprite的子类
+
+
+
+# 最后展望
+
+- 规整化代码
+  - 修复BUG
+  - 重构较长的方法函数
+  - 补充注释
+  - 重命名参数
+- 增加音效功能
+  - 飞船移动
+  - 子弹发射
+  - 外星人移动
+  - 外星人爆炸
+  - 游戏按钮
+  - 游戏开始
+  - 外星人撞击飞船
+  - 游戏死一次
+  - 游戏结束
+  - 背景音乐

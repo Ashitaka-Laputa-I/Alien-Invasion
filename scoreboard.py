@@ -1,4 +1,7 @@
 import pygame.font
+from pygame.sprite import Group
+
+from ship import Ship
 
 
 class Scoreboard():
@@ -19,9 +22,11 @@ class Scoreboard():
 		self.text_color = (20, 20, 20)
 		self.font = pygame.font.SysFont(None, 32)
 
-		# 初始化得分图像
+		# 初始化计分板图像
 		self.score_update()
 		self.high_score_update()
+		self.level_update()
+		self.ship_update()
 
 
 	def blitme(self):
@@ -29,6 +34,7 @@ class Scoreboard():
 		self.screen.blit(self.score_image, self.score_rect)
 		self.screen.blit(self.high_score_image, self.high_score_rect)
 		self.screen.blit(self.level_image, self.level_rect)
+		self.ships.draw(self.screen)
 
 
 	def score_update(self):
@@ -69,6 +75,17 @@ class Scoreboard():
 		self.level_rect = self.level_image.get_rect()
 		self.level_rect.right = self.score_rect.right
 		self.level_rect.top = self.score_rect.bottom + 10
+
+
+	def ship_update(self):
+		"""更新剩余飞船图像"""
+		self.ships = Group()
+		for ship_number in range(self.stats.ship_left):
+			ship = Ship(self.setting, self.screen)
+			ship.rect.x = 10 + 10 * ship_number + ship_number * ship.rect.width
+			ship.rect.y = 10
+			self.ships.add(ship)
+
 
 
 

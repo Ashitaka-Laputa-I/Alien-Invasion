@@ -36,7 +36,7 @@ def update_screen(setting, stats, screen, ship, bullets, aliens, button, scorebo
 		# 更新飞船位置,并且绘制在屏幕上
 		_update_ship(ship)
 		# 更新外星人群位置,并且绘制在以上屏幕上
-		_update_aliens(setting, stats, screen, ship, bullets, aliens)
+		_update_aliens(setting, stats, screen, ship, bullets, aliens, scoreboard)
 		# 更新子弹位置,并且绘制在以上屏幕上
 		_update_bullets(setting, stats, screen, ship, bullets, aliens, scoreboard)
 
@@ -79,6 +79,7 @@ def _check_mousedown_events(setting, stats, ship, bullets, aliens, button, score
 		scoreboard.score_update()
 		scoreboard.high_score_update()
 		scoreboard.level_update()
+		scoreboard.ship_update()
 
 
 def _check_keydown_events(setting, screen, ship, bullets, event):
@@ -123,7 +124,7 @@ def _update_bullets(setting, stats, screen, ship, bullets, aliens, scoreboard):
 		bullet.draw_bullet()
 
 
-def _update_aliens(setting, stats, screen, ship, bullets,  aliens):
+def _update_aliens(setting, stats, screen, ship, bullets,  aliens, scoreboard):
 	# 检测外星人是否触碰屏幕边缘,并且由此更改方向
 	_check_fleet_edges(setting, aliens)
 
@@ -133,10 +134,10 @@ def _update_aliens(setting, stats, screen, ship, bullets,  aliens):
 
 	# 检测外星人与飞船是否碰撞:
 	if pygame.sprite.spritecollideany(ship, aliens):
-		_you_die(setting, stats, screen, ship, bullets, aliens)
+		_you_die(setting, stats, screen, ship, bullets, aliens, scoreboard)
 
 	# 检测外星人是否到达了底端:
-	_check_fleet_bottom(setting, stats, screen, ship, bullets, aliens)
+	_check_fleet_bottom(setting, stats, screen, ship, bullets, aliens, scoreboard)
 
 	# 绘制外星人
 	for alien in aliens.sprites():
@@ -166,7 +167,7 @@ def _create_alien(setting, screen, aliens, clown, row):
 
 	# 设置外星人精确位置
 	alien.x = alien.rect.width + 2 * alien.rect.width * clown
-	alien.y = alien.rect.height + 2 * alien.rect.height * row
+	alien.y = 32 + alien.rect.height + 2 * alien.rect.height * row
 
 	#设置外星人位置
 	alien.rect.x = int(alien.x)
@@ -184,17 +185,17 @@ def _check_fleet_edges(setting, aliens):
 			break
 
 
-def _check_fleet_bottom(setting, stats, screen, ship, bullets, aliens):
+def _check_fleet_bottom(setting, stats, screen, ship, bullets, aliens, scoreboard):
 	"""检测外星人是否到达屏幕底端"""
 	screen_rect = screen.get_rect()
 
 	for alien in aliens.sprites():
 		if alien.rect.bottom >= screen_rect.bottom:
-			_you_die(setting, stats, screen, ship, bullets, aliens)
+			_you_die(setting, stats, screen, ship, bullets, aliens, scoreboard)
 			break
 
 
-def _you_die(setting, stats, screen, ship, bullets, aliens):
+def _you_die(setting, stats, screen, ship, bullets, aliens, scoreboard):
 	"""响应外星人撞到飞船"""
 	# 飞船剩余量减一
 	stats.ship_left -= 1
@@ -206,6 +207,9 @@ def _you_die(setting, stats, screen, ship, bullets, aliens):
 		# 清空外星人与子弹
 		aliens.empty()
 		bullets.empty()
+
+		# 更新计分板
+		scoreboard.ship_update()
 
 		# 创建新的外星人群, 并且将飞船初始化
 		create_fleet(setting, screen, ship, aliens)
@@ -232,13 +236,12 @@ def _check_bullet_alien_collision(setting, stats, screen, ship, bullets, aliens,
 			scoreboard.score_update()
 		_check_high_score(stats, scoreboard)
 
-	if len(aliens) == 0:
+	if len(aliens) == 0:	
+		stats.level += 1
+		scoreboard.level_update()
+		setting.increase_speed()
 		bullets.empty()
 		create_fleet(setting, screen, ship, aliens)
-		
-		if collision:
-			scoreboard.level_update()
-			setting.increase_speed()
 
 
 def _check_high_score(stats, scoreboard):
